@@ -1,0 +1,22 @@
+---
+title: "Preprocesamiento de datos CSV"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+
+datos <- read_csv("ruta/a/tu/archivo.csv")
+
+head(datos)
+
+datos <- datos %>%
+  select(columna1, columna2, columna3)
+
+datos <- datos %>%
+  drop_na()
+
+head(datos)
+
