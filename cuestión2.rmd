@@ -1,0 +1,31 @@
+---
+title: " Generar nuevas columnas a partir de la aplicación de fórmulas a las columnas existentes"
+output: html_document
+---
+
+```{r libreria}
+library(dplyr)
+```
+
+```{r carga de datos}
+# Supongamos que tienes el siguiente dataframe
+df <- data.frame(
+  num1 = c(1, 2, 3),
+  num2 = c(4, 5, 6),
+  cat = c("a", "b", "c"),
+  bool = c(TRUE, FALSE, TRUE)
+)
+
+# Para crear una nueva columna numérica a partir de una fórmula
+df <- df %>%
+  mutate(new_num = num1 + num2)  # Crea una nueva columna que es la suma de num1 y num2
+
+# Para crear una nueva columna de cadena a partir de las existentes
+df <- df %>%
+  mutate(new_cat = paste(cat, num1, sep = "_"))  # Crea una nueva columna que es la concatenación de 'cat' y 'num1', separados por un guion bajo
+
+# Para crear una nueva columna booleana a partir de una condición
+df <- df %>%
+  mutate(new_bool = num1 > num2)  # Crea una nueva columna que es TRUE si 'num1' es mayor que 'num2', y FALSE en caso contrario
+```
+

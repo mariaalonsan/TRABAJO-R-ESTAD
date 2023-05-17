@@ -4,19 +4,19 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-
+# Instalar y cargar la biblioteca necesaria
 library(tidyverse)
+```
+  
+```{r carga de datos}
+datos <- read_csv("vgsales.csv")
+datos <- datos %>% select(Rank, Name, NA_Sales, EU_Sales)
+datos <- na.omit(datos)
+print(datos)
+```
 
-datos <- read_csv("ruta/a/tu/archivo.csv")
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
-head(datos)
-
-datos <- datos %>%
-  select(columna1, columna2, columna3)
-
-datos <- datos %>%
-  drop_na()
-
-head(datos)
 
