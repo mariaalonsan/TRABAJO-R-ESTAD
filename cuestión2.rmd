@@ -3,9 +3,9 @@ title: " Generar nuevas columnas a partir de la aplicación de fórmulas a las c
 output: html_document
 ---
 
-```{r libreria}
+```{r setup, inlude=FALSE}
 library(dplyr)
-```
+
 
 ```{r carga de datos}
 # Supongamos que tienes el siguiente dataframe
