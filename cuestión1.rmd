@@ -19,6 +19,7 @@ datos <- na.omit(datos)
 print(datos)
 ```
 
-
-
-
+```r{render}
+library(rmarkdown)
+render("cuestión2.Rmd")
+```
