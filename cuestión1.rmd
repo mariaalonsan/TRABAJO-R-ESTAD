@@ -4,6 +4,10 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r librerias, include=FALSE}
 # Instalar y cargar la biblioteca necesaria
 library(tidyverse)
 ```
@@ -15,8 +19,6 @@ datos <- na.omit(datos)
 print(datos)
 ```
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+
 
 
