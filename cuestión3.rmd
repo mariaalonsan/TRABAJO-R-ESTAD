@@ -1,0 +1,15 @@
+---
+title: "Generar nuevas columnas a partir de la recodificación de otras"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r librerias, include=FALSE}
+# Instalar y cargar la biblioteca necesaria
+library(tidyverse)
+```
+
