@@ -1,7 +1,13 @@
 ---
-title: "Generar nuevas columnas a partir de la recodificación de otras"
+title: "Recodificar Columnas y Generar Nuevas Columnas: 
+Generar nuevas columnas a partir de la recodificación de otras"
 output: html_document
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+install.packages("readr")
+```
 
 
 ```{r setup, include=FALSE}
@@ -11,5 +17,33 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r librerias, include=FALSE}
 # Instalar y cargar la biblioteca necesaria
 library(tidyverse)
+library(dplyr)
+library(readr)
+```
+```{r datos}
+# Carga los datos del archivo CSV
+df <- read_csv("C:/Users/marie/Documents/GitHub/TRABAJO-R-ESTAD/vgsales.csv")
+```
+
+```{r}
+# Muestra las primeras filas del dataframe
+head(df)
+```
+
+```{r}
+# Recodifica la columna Platform y crea una nueva columna llamada Platform_Type
+df <- df %>%
+  mutate(Platform_Type = recode(Platform,
+                                "PS4" = "PlayStation",
+                                "PS3" = "PlayStation",
+                                "PS2" = "PlayStation",
+                                "X360" = "Xbox",
+                                "XOne" = "Xbox",
+                                .default = "Other"))
+```
+    
+```{r}
+# Muestra las primeras filas del dataframe modificado
+head(df)
 ```
 
