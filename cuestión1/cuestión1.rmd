@@ -1,0 +1,61 @@
+---
+title: "Preprocesamiento de datos CSV"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+install.packages("tidyverse")
+install.packages("rmarkdown")
+install.packages("knitr")
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```
+  
+```{r carga de datos}
+# Carga los datos del archivo csv
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+head(videojuegos)
+
+```
+
+```{r}
+# Seleccionamos las columnas necesarias
+videojuegos <- videojuegos %>%
+  select(Rank, Name, Platform, Year, Genre, Publisher, NA_Sales, EU_Sales, JP_Sales, Other_Sales, Global_Sales)
+
+# Eliminamos las filas con valores desconocidos (NAs)
+videojuegos <- videojuegos %>% drop_na()
+
+# Mostramos las primeras líneas después de preprocesamiento
+head(videojuegos)
+```
+
+
+```{r}	
+# Guardamos los datos preprocesados en un nuevo archivo CSV
+write.csv(videojuegos, "./vgsales_preprocessed.csv", row.names = FALSE)
+```
+
+```{r}
+# Añade una nueva columna que es un booleano, TRUE si NA_Sales es mayor que EU_Sales, FALSE en caso contrario
+df <- df %>%
+  mutate(nueva_columna_booleana = ifelse(NA_Sales > EU_Sales, TRUE, FALSE))
+```
+
+```{r}	
+# Muestra el dataframe resultante
+print(df)
+```
+
+# Este código agregará tres nuevas columnas al DataFrame:
+# - `nueva_columna_suma`: La suma de las ventas en Norte América (`NA_Sales`) y en Europa (`EU_Sales`).
+# - `nueva_columna_cadena`: Una cadena que es la concatenación del nombre del juego (`Name`) y su género (`Genre`), separados por " - ".
+# - `nueva_columna_booleana`: Un booleano que es TRUE si las ventas en Norte América (`NA_Sales`) son mayores que las ventas en Europa (`EU_Sales`), y FALSE en caso contrario.
+
+# Finalmente, mostrará el DataFrame resultante.
+# Para renderizar este archivo .Rmd a HTML, puedes usar el comando `rmarkdown::render("nombre_de_tu_archivo.Rmd")` en la consola de R, reemplazando "nombre_de_tu_archivo.Rmd" por el nombre de tu archivo .Rmd.
+
+

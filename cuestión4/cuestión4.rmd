@@ -1,0 +1,37 @@
+---
+title: "Filtrado de datos de videojuegos"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```
+
+```{r}
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Filtramos los datos para obtener sólo los juegos de la plataforma Wii y que sean del género Sports
+videojuegos_filtrados <- videojuegos %>%
+  filter(Platform == "Wii" & Genre == "Sports")
+
+# Mostramos las primeras líneas después del filtrado
+head(videojuegos_filtrados)
+```
+
+```{r}
+# Guardamos los datos filtrados en un nuevo archivo CSV
+write.csv(videojuegos_filtrados, "./videogamesales_filtered.csv", row.names = FALSE)
+```
+
+
+
+

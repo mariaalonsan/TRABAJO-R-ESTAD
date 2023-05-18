@@ -1,0 +1,47 @@
+---
+title: "Generar nuevas columnas a partir de la aplicación de fórmulas a las columnas existentes"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r setup, inlude=FALSE}
+library(dplyr)
+library(readr)
+```
+
+
+```{r carga de datos}
+# Cargamos el dataframe desde el csv
+df <- read_csv("vgsales.csv")
+
+```
+
+
+```{r}
+# Añade una nueva columna que es la suma de NA_Sales y EU_Sales
+df <- df %>%
+  mutate(Total_Sales = NA_Sales + EU_Sales)
+```
+
+```{r}
+# Añade una nueva columna que es la concatenación de Name y " - " y Platform
+df <- df %>%
+  mutate(Name_Platform = paste0(Name, " - ", Platform))
+```
+
+```{r}	
+# Añade una nueva columna que es un booleano, true si NA_Sales > 10, false de lo contrario
+df <- df %>%
+  mutate(High_NA_Sales = ifelse(NA_Sales > 10, TRUE, FALSE))
+```
+
+```{r}	
+# Muestra las primeras filas del dataframe resultante
+head(df)
+head(df, 10)
+```	
+
+
