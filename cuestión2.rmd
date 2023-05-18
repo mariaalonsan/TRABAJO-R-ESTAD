@@ -5,7 +5,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-install.packages('dplyr')
+install.packages("dplyr")
 ```
 
 ```{r setup, inlude=FALSE}
