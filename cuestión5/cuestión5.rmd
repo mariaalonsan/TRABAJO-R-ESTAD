@@ -1,0 +1,58 @@
+---
+title: "Análisis de Frecuencias de Videojuegos"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(readr)
+library(knitr)
+```
+
+```{r}	
+# Asumiendo que el archivo csv está en la misma carpeta que este archivo .Rmd
+df <- read_csv("vgsales.csv")
+```
+
+```{r}	
+# Muestra las primeras filas del conjunto de datos
+head(df)
+```
+
+```{r}
+# Calcula la tabla de frecuencias para el género del videojuego
+genre_freq_table <- df %>%
+  group_by(Genre) %>%
+  summarise(Frequency = n(), .groups = "drop")
+
+kable(genre_freq_table, caption = "Tabla de Frecuencias - Género")
+```
+
+```{r}	
+# Calcula la tabla de frecuencias para la plataforma del videojuego
+platform_freq_table <- df %>%
+  group_by(Platform) %>%
+  summarise(Frequency = n(), .groups = "drop")
+
+kable(platform_freq_table, caption = "Tabla de Frecuencias - Plataforma")
+```
+
+```{r}
+# Calcula la tabla de frecuencias para la empresa publicadora del videojuego
+publisher_freq_table <- df %>%
+  group_by(Publisher) %>%
+  summarise(Frequency = n(), .groups = "drop")
+
+kable(publisher_freq_table, caption = "Tabla de Frecuencias - Publicadora")
+```
+
+# Este código realizará lo siguiente:
+
+# - Leerá el archivo csv desde la misma carpeta en la que se encuentra este archivo .Rmd
+# -  Calculará las tablas de frecuencias para las variables "Genre", "Platform" y "Publisher"
+# - Mostrará estas tablas de frecuencias en el archivo HTML final
+
+# Para renderizar este archivo .Rmd a .html, puedes seguir los pasos que te he proporcionado en la respuesta anterior.
+
+
