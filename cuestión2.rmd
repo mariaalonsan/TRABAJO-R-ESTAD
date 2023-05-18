@@ -5,6 +5,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+install.packages('dplyr')
 ```
 
 ```{r setup, inlude=FALSE}
@@ -25,12 +26,6 @@ df <- data.frame(
 # Añade una nueva columna que es la suma de columna1 y columna2
 df <- df %>%
   mutate(nueva_columna_suma = Rank + Name)
-```
-
-```{r}
-# Añade una nueva columna que es la concatenación de columna3 y " nuevo"
-df <- df %>%
-  mutate(nueva_columna_cadena = paste0(Global_Sales, " nuevo"))
 ```
 
 ```{r}
