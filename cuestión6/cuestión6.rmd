@@ -11,7 +11,7 @@ library(rmarkdown)
 ```
 ```{r }
 # Leemos el fichero csv
-videojuegos <- read.csv("./videogamesales.csv", header = TRUE)
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
 
 # Mostramos las primeras líneas del conjunto de datos
 head(videojuegos)
@@ -47,7 +47,6 @@ videojuegos %>%
 
 # Agrupamos por publicador y calculamos la media de ventas globales para cada grupo
 videojuegos %>% 
-  group_by(Publisher) 
-  %>%
+  group_by(Publisher) %>%
   summarise(mean_global_sales = mean(Global_Sales, na.rm = TRUE))
 ```
