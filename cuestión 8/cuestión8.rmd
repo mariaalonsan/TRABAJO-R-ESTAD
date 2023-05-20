@@ -1,0 +1,40 @@
+---
+title: "Diagramas de ventas de videojuegos"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```
+
+```{r}
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Creamos un diagrama de cajas para las ventas globales
+ggplot(videojuegos, aes(x = "", y = Global_Sales)) +
+  geom_boxplot() +
+  labs(title = "Diagrama de cajas de las ventas globales",
+       y = "Ventas globales")
+```
+
+```{r}
+# Creamos un diagrama de cajas para las ventas globales agrupado por género
+ggplot(videojuegos, aes(x = Genre, y = Global_Sales)) +
+  geom_boxplot() +
+  labs(title = "Diagrama de cajas de las ventas globales por género",
+       x = "Género",
+       y = "Ventas globales") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+
+
