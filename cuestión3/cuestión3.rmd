@@ -6,12 +6,6 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-install.packages("readr")
-```
-
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r librerias, include=FALSE}
@@ -31,15 +25,19 @@ head(df)
 ```
 
 ```{r}
-# Recodifica la columna Platform y crea una nueva columna llamada Platform_Type
-df <- df %>%
-  mutate(Platform_Type = recode(Platform,
-                                "PS4" = "PlayStation",
-                                "PS3" = "PlayStation",
-                                "PS2" = "PlayStation",
-                                "X360" = "Xbox",
-                                "XOne" = "Xbox",
-                                .default = "Other"))
+# Recodifica la columna Platform
+df$Platform <- dplyr::recode(df$Platform,
+                             "PS4" = "PlayStation",
+                             "PS3" = "PlayStation",
+                             "PS2" = "PlayStation",
+                             "X360" = "Xbox",
+                             "XOne" = "Xbox",
+                             .default = "Other")
+
+# Crea una nueva columna llamada Platform_Type con within()
+df <- within(df, {
+  Platform_Type <- Platform
+})
 ```
     
 ```{r}

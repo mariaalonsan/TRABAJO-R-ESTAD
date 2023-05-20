@@ -5,9 +5,6 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-install.packages("tidyverse")
-install.packages("rmarkdown")
-install.packages("knitr")
 library(tidyverse)
 library(knitr)
 library(rmarkdown)
@@ -16,9 +13,8 @@ library(rmarkdown)
 ```{r carga de datos}
 # Carga los datos del archivo csv
 # Leemos el fichero csv
-videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+videojuegos <- read.csv("../vgsales.csv", header = TRUE)
 head(videojuegos)
-
 ```
 
 ```{r}
