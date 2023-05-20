@@ -1,0 +1,46 @@
+---
+title: "Análisis de ventas de videojuegos"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```	
+
+```{r, datos}
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Agrupamos los datos por género y calculamos la suma de ventas globales
+ventas_por_genero <- videojuegos %>%
+  group_by(Genre) %>%
+  summarise(VentasGlobales = sum(Global_Sales, na.rm = TRUE))
+
+# Creamos un diagrama de barras de las ventas globales por género
+ggplot(ventas_por_genero, aes(x = Genre, y = VentasGlobales, fill = Genre)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  labs(title = "Ventas globales de videojuegos por género", x = "Género", y = "Ventas globales (en millones)", fill = "Género") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+    
+```{r}
+# Agrupamos los datos por año y calculamos la suma de ventas globales
+ventas_por_año <- videojuegos %>%
+  group_by(Year) %>%
+  summarise(VentasGlobales = sum(Global_Sales, na.rm = TRUE))
+
+# Creamos un diagrama de líneas de las ventas globales por año
+ggplot(ventas_por_año, aes(x = Year, y = VentasGlobales, group = 1)) +
+  geom_line(color = "blue") +
+  theme_minimal() +
+  labs(title = "Ventas globales de videojuegos por año", x = "Año", y = "Ventas globales (en millones)")
+```
