@@ -1,0 +1,43 @@
+---
+title: "Diseño y edición de diagramas de videojuegos"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```	
+
+```{r}	
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Agrupamos por género y sumamos las ventas globales
+ventas_por_genero <- videojuegos %>%
+  group_by(Genre) %>%
+  summarise(Total_Global_Sales = sum(Global_Sales, na.rm = TRUE))
+
+# Generamos un gráfico de barras de las ventas globales por género
+ggplot(ventas_por_genero, aes(x = Genre, y = Total_Global_Sales)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(
+    title = "Ventas globales por género de videojuegos",
+    x = "Género",
+    y = "Ventas globales (en millones)",
+    caption = "Datos de Kaggle"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+# Guardamos los datos agrupados en un nuevo archivo CSV
+write.csv(ventas_por_genero, "./vgsales_by_genre.csv", row.names = FALSE)
+```

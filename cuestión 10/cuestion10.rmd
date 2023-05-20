@@ -1,0 +1,46 @@
+---
+title: "Regresión Lineal con Datos de Ventas de Videojuegos"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+library(broom)
+```
+
+```{r}	
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Ajustamos un modelo de regresión lineal simple
+lm_simple <- lm(Global_Sales ~ NA_Sales, data = videojuegos)
+
+# Resumen del modelo
+summary(lm_simple)
+```
+
+```{r}
+# Ajustamos modelos de regresión lineal por género
+lm_grouped <- videojuegos %>% 
+  group_by(Genre) %>% 
+  do(model = lm(Global_Sales ~ NA_Sales, data = .))
+
+# Obtenemos los resúmenes de los modelos
+summary_list <- lapply(lm_grouped$model, summary)
+
+# Obtenemos los coeficientes de los modelos
+coef_list <- lapply(summary_list, broom::tidy)
+
+# Creamos un nuevo dataframe con los coeficientes
+coef_df <- data.frame(Genre = lm_grouped$Genre, coef = coef_list)
+
+coef_df
+```
