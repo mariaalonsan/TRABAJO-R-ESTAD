@@ -7,35 +7,24 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r setup, inlude=FALSE}
+```{r librerias, include=FALSE}
 library(dplyr)
 library(readr)
 ```
 
-
 ```{r carga de datos}
 # Cargamos el dataframe desde el csv
 df <- read_csv("vgsales.csv")
-
 ```
-
 
 ```{r}
 # Añade una nueva columna que es la suma de NA_Sales y EU_Sales
-df <- df %>%
-  mutate(Total_Sales = NA_Sales + EU_Sales)
+df$Total_Sales <- df$NA_Sales + df$EU_Sales
 ```
 
 ```{r}
 # Añade una nueva columna que es la concatenación de Name y " - " y Platform
-df <- df %>%
-  mutate(Name_Platform = paste0(Name, " - ", Platform))
-```
-
-```{r}	
-# Añade una nueva columna que es un booleano, true si NA_Sales > 10, false de lo contrario
-df <- df %>%
-  mutate(High_NA_Sales = ifelse(NA_Sales > 10, TRUE, FALSE))
+df$Name_Platform <- paste0(df$Name, " - ", df$Platform)
 ```
 
 ```{r}	
@@ -43,5 +32,3 @@ df <- df %>%
 head(df)
 head(df, 10)
 ```	
-
-
