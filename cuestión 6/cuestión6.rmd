@@ -1,0 +1,52 @@
+---
+title: "Análisis estadístico de videojuegos"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```
+```{r }
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r }
+# Contamos las frecuencias de cada plataforma, género y publicador
+table(videojuegos$Platform)
+table(videojuegos$Genre)
+table(videojuegos$Publisher)
+```
+
+```{r }
+# Calculamos estadísticos descriptivos para las variables cuantitativas
+summary(videojuegos$Year)
+summary(videojuegos$NA_Sales)
+summary(videojuegos$EU_Sales)
+summary(videojuegos$JP_Sales)
+summary(videojuegos$Other_Sales)
+summary(videojuegos$Global_Sales)
+```
+
+```{r }
+# Agrupamos por género y calculamos la media de ventas globales para cada grupo
+videojuegos %>% 
+  group_by(Genre) %>%
+  summarise(mean_global_sales = mean(Global_Sales, na.rm = TRUE))
+
+# Agrupamos por plataforma y calculamos la media de ventas globales para cada grupo
+videojuegos %>% 
+  group_by(Platform) %>%
+  summarise(mean_global_sales = mean(Global_Sales, na.rm = TRUE))
+
+# Agrupamos por publicador y calculamos la media de ventas globales para cada grupo
+videojuegos %>% 
+  group_by(Publisher) %>%
+  summarise(mean_global_sales = mean(Global_Sales, na.rm = TRUE))
+```
