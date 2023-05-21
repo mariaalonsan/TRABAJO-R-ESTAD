@@ -1,0 +1,41 @@
+---
+title: "Comparación de Modelos de Regresión"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+library(caret)
+```
+
+```{r datos}
+# Leemos el fichero csv
+vgsales <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(vgsales)
+```
+
+```{r}
+# Creamos un modelo de regresión lineal simple
+model_simple <- lm(Global_Sales ~ NA_Sales, data = vgsales)
+
+# Resumen del modelo
+summary(model_simple)
+```
+
+```{r}	
+# Creamos un modelo de regresión lineal múltiple
+model_multiple <- lm(Global_Sales ~ NA_Sales + EU_Sales + JP_Sales, data = vgsales)
+
+# Resumen del modelo
+summary(model_multiple)
+```
+
+```{r}	
+# Comparamos los dos modelos usando el criterio de información de Akaike (AIC)
+AIC(model_simple, model_multiple)
+```

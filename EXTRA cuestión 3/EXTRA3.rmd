@@ -1,0 +1,42 @@
+---
+title: "Análisis visual de ventas de videojuegos"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```
+    
+```{r}
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Creamos un gráfico de barras que muestra las ventas globales por género
+videojuegos %>%
+  ggplot(aes(x = Genre, y = Global_Sales, fill = Genre)) +
+  geom_bar(stat = "identity", color = "#000000") +
+  theme_minimal() +
+  labs(title = "Ventas globales por género", x = "Género", y = "Ventas globales") +
+  theme(legend.position = "none", plot.title = element_text(hjust = 0.5)) +
+  scale_fill_brewer(palette = "Set3")
+```
+
+```{r}
+# Creamos un gráfico de puntos que muestra las ventas globales por año
+videojuegos %>%
+  ggplot(aes(x = Year, y = Global_Sales, color = Genre)) +
+  geom_point(alpha = 0.6, size = 2, shape = 21, fill = "#545050") +
+  theme_minimal() +
+  labs(title = "Ventas globales por año", x = "Año", y = "Ventas globales") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_color_brewer(palette = "Set1")
+```
+

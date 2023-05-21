@@ -1,5 +1,5 @@
 ---
-title: "Regresión Lineal con Datos de Ventas de Videojuegos"
+title: "Modelos de Regresión No Lineales en Ventas de Videojuegos"
 output: html_document
 ---
 
@@ -9,38 +9,44 @@ library(tidyverse)
 library(knitr)
 library(rmarkdown)
 library(broom)
+library(ggplot2)
 ```
 
-```{r}	
+```{r datos}	
 # Leemos el fichero csv
-videojuegos <- read.csv("./vgsales.csv", header = TRUE)
-
+videojuegos <- read.csv("vgsales.csv", header = TRUE)
 # Mostramos las primeras líneas del conjunto de datos
 head(videojuegos)
 ```
 
 ```{r}
-# Ajustamos un modelo de regresión lineal simple
-lm_simple <- lm(Global_Sales ~ NA_Sales, data = videojuegos)
+# Eliminamos las filas con valores desconocidos (NAs)
+videojuegos <- videojuegos %>% drop_na()
 
-# Resumen del modelo
-summary(lm_simple)
+# Mostramos las primeras líneas después de preprocesamiento
+head(videojuegos)
 ```
 
 ```{r}
-# Ajustamos modelos de regresión lineal por género
-lm_grouped <- videojuegos %>% 
-  group_by(Genre) %>% 
-  do(model = lm(Global_Sales ~ NA_Sales, data = .))
+# Construimos un modelo de regresión lineal simple
+model <- lm(Global_Sales ~ Year, data = videojuegos)
 
-# Obtenemos los resúmenes de los modelos
-summary_list <- lapply(lm_grouped$model, summary)
+# Mostramos un resumen del modelo
+summary(model)
+```
 
-# Obtenemos los coeficientes de los modelos
-coef_list <- lapply(summary_list, broom::tidy)
+```{r}
+# Interpretamos el modelo
+tidy_model <- tidy(model)
 
-# Creamos un nuevo dataframe con los coeficientes
-coef_df <- data.frame(Genre = lm_grouped$Genre, coef = coef_list)
+# El coeficiente de "Year" nos dice cuánto cambia en promedio la variable dependiente (Global_Sales)
+# por cada aumento de una unidad en "Year", manteniendo todas las demás variables constantes.
+tidy_model
+```
 
-coef_df
+```{r}
+# Creamos un gráfico de dispersión con la línea de regresión
+ggplot(videojuegos, aes(x = Year, y = Global_Sales)) +
+  geom_point() +
+  geom_smooth(method = lm, se = FALSE, color = "red")
 ```

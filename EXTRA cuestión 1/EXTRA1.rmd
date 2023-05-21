@@ -1,0 +1,32 @@
+---
+title: "Pivotamiento de datos de videojuegos"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```
+
+```{r}	
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Pivotamos el DataFrame de formato ancho a largo
+videojuegos_pivotado <- videojuegos %>%
+  pivot_longer(cols = c(NA_Sales, EU_Sales, JP_Sales, Other_Sales, Global_Sales),
+               names_to = "Region",
+               values_to = "Sales")
+
+# Mostramos las primeras líneas después del pivotamiento
+head(videojuegos_pivotado)
+```
+    
+

@@ -1,0 +1,59 @@
+---
+title: "Predicción de ventas de videojuegos"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+library(caret)
+```
+
+```{r}
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Eliminamos las filas con valores desconocidos (NAs)
+videojuegos <- videojuegos %>% drop_na()
+
+# Convertimos las variables categóricas a factores
+videojuegos$Platform <- as.factor(videojuegos$Platform)
+videojuegos$Genre <- as.factor(videojuegos$Genre)
+videojuegos$Publisher <- as.factor(videojuegos$Publisher)
+
+# Mostramos las primeras líneas después de preprocesamiento
+head(videojuegos)
+```
+
+```{r}
+# Dividimos el conjunto de datos en un conjunto de entrenamiento y un conjunto de prueba
+set.seed(123)
+indices <- createDataPartition(videojuegos$Global_Sales, p = 0.8, list = FALSE)
+datos_entrenamiento <- videojuegos[indices,]
+datos_prueba <- videojuegos[-indices,]
+
+# Construimos el modelo de regresión utilizando las ventas en NA para predecir las ventas globales
+modelo <- lm(Global_Sales ~ NA_Sales, data = datos_entrenamiento)
+```
+
+```{r}	
+# Hacemos predicciones en el conjunto de prueba
+predicciones <- predict(modelo, newdata = datos_prueba)
+
+# Mostramos las predicciones
+head(predicciones)
+```
+
+```{r}	
+# Evaluamos el modelo calculando el error cuadrático medio
+ECM <- mean((datos_prueba$Global_Sales - predicciones)^2)
+
+ECM
+```

@@ -1,0 +1,49 @@
+---
+title: "Análisis de videojuegos"
+output: html_document
+---
+
+# Este archivo .Rmd hará lo siguiente:
+
+# 1. Cargará los datos del archivo CSV.
+# 2. Creará un diagrama de barras mostrando el número de videojuegos por género para cada plataforma.
+# 3. Creará un histograma mostrando la distribución de las ventas globales por género.
+# 4. Creará un diagrama de cajas mostrando las ventas en Norteamérica por género para cada plataforma.
+
+
+```{r setup, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```	
+
+```{r}	
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Creamos un diagrama de barras para visualizar el número de videojuegos por género
+ggplot(data = videojuegos) +
+  geom_bar(mapping = aes(x = Genre)) +
+  facet_wrap(~ Platform) +
+  theme(axis.text.x = element_text(angle = 90)) +
+  labs(title = "Número de Videojuegos por Género y Plataforma", x = "Género", y = "Número de Videojuegos")
+
+# Creamos un histograma para visualizar la distribución de las ventas globales
+ggplot(data = videojuegos) +
+  geom_histogram(mapping = aes(x = Global_Sales)) +
+  facet_wrap(~ Genre) +
+  labs(title = "Distribución de Ventas Globales por Género", x = "Ventas Globales", y = "Frecuencia")
+
+# Creamos un diagrama de cajas para visualizar las ventas en Norteamérica por género
+ggplot(data = videojuegos) +
+  geom_boxplot(mapping = aes(x = Genre, y = NA_Sales)) +
+  facet_wrap(~ Platform) +
+  theme(axis.text.x = element_text(angle = 90)) +
+  labs(title = "Ventas en Norteamérica por Género y Plataforma", x = "Género", y = "Ventas en Norteamérica")
+```

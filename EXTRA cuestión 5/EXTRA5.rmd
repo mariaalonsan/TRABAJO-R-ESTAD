@@ -1,0 +1,42 @@
+---
+title: "Comparación de Distribuciones de una variable cuantitativa continua"
+output: html_document
+---
+
+
+# Este código lee el archivo CSV, selecciona la variable 'Global_Sales', crea una distribución normal teórica con la misma media y desviación estándar que 'Global_Sales', y luego crea un gráfico de comparación.
+
+
+```{r setup, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```
+
+```{r}	
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}	
+# Seleccionamos la variable de interés
+ventas_globales <- videojuegos$Global_Sales
+
+# Creamos una distribución normal teórica con la misma media y desviación estándar
+dist_normal <- rnorm(length(ventas_globales), mean(ventas_globales), sd(ventas_globales))
+
+# Ordenamos ambas distribuciones para poder comparar sus percentiles
+ventas_globales <- sort(ventas_globales)
+dist_normal <- sort(dist_normal)
+
+# Creamos un gráfico de comparación
+plot(dist_normal, ventas_globales, main = "QQ Plot: Ventas Globales vs Distribución Normal",
+     xlab = "Distribución Normal Teórica", ylab = "Ventas Globales", pch = 16)
+abline(a = 0, b = 1, col = "red")
+```
+
+```{r}

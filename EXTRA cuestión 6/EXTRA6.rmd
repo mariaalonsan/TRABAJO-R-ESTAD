@@ -1,0 +1,49 @@
+---
+title: "Análisis automatizado de ventas de videojuegos"
+author: "Tu nombre"
+date: "18/5/2023"
+output: html_document
+---
+
+
+# Este código lee los datos desde el archivo "vgsales.csv", elimina las filas con valores desconocidos y luego guarda los datos preprocesados en el archivo "vgsales_preprocessed.csv". También muestra las primeras líneas del conjunto de datos preprocesado.
+
+
+```{r setup, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(knitr)
+library(rmarkdown)
+```
+
+```{r,}
+# Función para cargar los datos
+load_data <- function(filename) {
+  data <- read.csv(filename, header = TRUE)
+  return(data)
+}
+
+# Función para eliminar las filas con valores desconocidos
+remove_na_rows <- function(data) {
+  data <- data[complete.cases(data), ]
+  return(data)
+}
+
+# Función para guardar los datos preprocesados
+save_data <- function(data, filename) {
+  write.csv(data, filename, row.names = FALSE)
+}
+```
+
+```{r,}
+# Cargamos los datos
+videojuegos <- load_data("./vgsales.csv")
+
+# Eliminamos las filas con valores desconocidos
+videojuegos <- remove_na_rows(videojuegos)
+
+# Guardamos los datos preprocesados
+save_data(videojuegos, "./vgsales_preprocessed.csv")
+
+# Mostramos las primeras líneas del conjunto de datos preprocesado
+head(videojuegos)
+```

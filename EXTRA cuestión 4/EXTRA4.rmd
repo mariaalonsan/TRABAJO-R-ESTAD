@@ -1,0 +1,42 @@
+---
+title: "Comparación de la distribución observada de una variable cuantitativa discreta y teórica"
+output: html_document
+---
+
+
+# Este código lee tu archivo CSV, luego crea un histograma para mostrar la distribución observada de las ventas globales. Después, crea un gráfico de densidad para representar la distribución teórica (en este caso, se supone que es una distribución normal). Finalmente, muestra las dos gráficas lado a lado para su comparación.
+
+
+```{r setup, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+library(ggplot2)
+library(ggpubr)
+```
+
+```{r}
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Creamos un histograma con las ventas globales
+hist_ventas <- videojuegos %>%
+  ggplot(aes(x = Global_Sales)) +
+  geom_histogram(binwidth = 1, fill = "#a600ff", alpha = 0.5) +
+  labs(title = "Distribución observada de ventas globales", x = "Ventas Globales", y = "Frecuencia")
+
+# Creamos un gráfico de densidad que represente la distribución teórica (supongamos que es normal)
+dens_ventas <- videojuegos %>%
+  ggplot(aes(x = Global_Sales)) +
+  stat_density(aes(y = ..count..), geom = "line", color = "#dd0000") +
+  labs(title = "Distribución teórica de ventas globales", x = "Ventas Globales", y = "Densidad")
+
+# Comparamos las dos gráficas
+ggarrange(hist_ventas, dens_ventas, ncol = 2, nrow = 1)
+```

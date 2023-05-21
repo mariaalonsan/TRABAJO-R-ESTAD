@@ -1,0 +1,34 @@
+---
+title: "Informe de Videojuegos"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```	
+```{r}
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Seleccionamos las columnas necesarias
+videojuegos <- videojuegos %>% select(Rank, Name, Platform, Year, Genre, Publisher, NA_Sales, EU_Sales, JP_Sales, Other_Sales, Global_Sales)
+
+# Eliminamos las filas con valores desconocidos (NAs)
+videojuegos <- videojuegos %>% drop_na()
+
+# Mostramos las primeras líneas después de preprocesamiento
+head(videojuegos)
+```
+
+```{r}
+# Guardamos los datos preprocesados en un nuevo archivo CSV
+write.csv(videojuegos, "./vgsales_preprocessed.csv", row.names = FALSE)
+```
