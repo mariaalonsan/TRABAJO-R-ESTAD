@@ -11,39 +11,24 @@ library(rmarkdown)
 ```
   
 ```{r carga de datos}
-# Carga los datos del archivo csv
 # Leemos el fichero csv
-videojuegos <- read.csv("../vgsales.csv", header = TRUE)
-head(videojuegos)
-```
-
-```{r}
-# Seleccionamos las columnas necesarias
-videojuegos <- videojuegos %>%
-  select(Rank, Name, Platform, Year, Genre, Publisher, NA_Sales, EU_Sales, JP_Sales, Other_Sales, Global_Sales)
-
-# Eliminamos las filas con valores desconocidos (NAs)
-videojuegos <- videojuegos %>% drop_na()
-
-# Mostramos las primeras líneas después de preprocesamiento
-head(videojuegos)
-```
-
-
-```{r}	
-# Guardamos los datos preprocesados en un nuevo archivo CSV
-write.csv(videojuegos, "./vgsales_preprocessed.csv", row.names = FALSE)
+vg_df <- read.csv("./vgsales.csv", header = TRUE)
+# Mostramos las primeras líneas del conjunto de datos
+print(vg_df)
 ```
 
 ```{r}
 # Añade una nueva columna que es un booleano, TRUE si NA_Sales es mayor que EU_Sales, FALSE en caso contrario
-df <- df %>%
-  mutate(nueva_columna_booleana = ifelse(NA_Sales > EU_Sales, TRUE, FALSE))
+vg_df$nueva_columna_booleana <- NA
+vg_df$nueva_columna_booleana[vg_df$NA_Sales > vg_df$EU_Sales] <- TRUE
+vg_df$nueva_columna_booleana[vg_df$NA_Sales <= vg_df$EU_Sales] <- FALSE
+# Mostramos las primeras líneas después de añadir la nueva columna
+head(vg_df)
 ```
 
-```{r}	
-# Muestra el dataframe resultante
-print(df)
+```{r}
+# Guardamos los datos preprocesados en un nuevo archivo CSV
+write.csv(vg_df, "./vgsales_preprocessed.csv", row.names = FALSE)
 ```
 
 # Este código agregará tres nuevas columnas al DataFrame:
