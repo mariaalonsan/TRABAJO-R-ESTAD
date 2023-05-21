@@ -1,0 +1,39 @@
+---
+title: "Simulación de ventas de videojuegos"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```
+
+```{r}
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Generamos números aleatorios a partir de una distribución uniforme
+set.seed(123)  # Para reproducibilidad
+ventas_simuladas <- runif(nrow(videojuegos), min(videojuegos$Global_Sales), max(videojuegos$Global_Sales))
+
+# Añadimos la nueva variable al dataframe
+videojuegos$Ventas_Simuladas <- ventas_simuladas
+
+# Mostramos las primeras líneas del conjunto de datos con la variable simulada
+head(videojuegos)
+```
+
+```{r}
+# Resumen estadístico de la variable simulada
+summary(videojuegos$Ventas_Simuladas)
+
+# Histograma de la variable simulada
+hist(videojuegos$Ventas_Simuladas, main = "Histograma de Ventas Simuladas", xlab = "Ventas Simuladas")
+```
