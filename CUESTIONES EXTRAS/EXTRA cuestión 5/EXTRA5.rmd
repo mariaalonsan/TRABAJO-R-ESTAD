@@ -38,5 +38,3 @@ plot(dist_normal, ventas_globales, main = "QQ Plot: Ventas Globales vs Distribuc
      xlab = "Distribución Normal Teórica", ylab = "Ventas Globales", pch = 16)
 abline(a = 0, b = 1, col = "red")
 ```
-
-```{r}

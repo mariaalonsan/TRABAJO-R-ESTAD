@@ -1,0 +1,837 @@
+---
+title: "TRABAJO ESTADÍSTICA R"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```
+  
+```{r }
+# Leemos el fichero csv
+vg_df <- read.csv("./vgsales.csv", header = TRUE)
+# Mostramos las primeras líneas del conjunto de datos
+head(vg_df)
+```
+
+```{r}
+# Añade una nueva columna que es un booleano, TRUE si NA_Sales es mayor que EU_Sales, FALSE en caso contrario
+vg_df$nueva_columna_booleana <- NA
+vg_df$nueva_columna_booleana[vg_df$NA_Sales > vg_df$EU_Sales] <- TRUE
+vg_df$nueva_columna_booleana[vg_df$NA_Sales <= vg_df$EU_Sales] <- FALSE
+# Mostramos las primeras líneas después de añadir la nueva columna
+head(vg_df)
+```
+
+```{r}
+# Guardamos los datos preprocesados en un nuevo archivo CSV
+write.csv(vg_df, "./vgsales_preprocessed.csv", row.names = FALSE)
+```
+
+# Este código agregará tres nuevas columnas al DataFrame:
+# - `nueva_columna_suma`: La suma de las ventas en Norte América (`NA_Sales`) y en Europa (`EU_Sales`).
+# - `nueva_columna_cadena`: Una cadena que es la concatenación del nombre del juego (`Name`) y su género (`Genre`), separados por " - ".
+# - `nueva_columna_booleana`: Un booleano que es TRUE si las ventas en Norte América (`NA_Sales`) son mayores que las ventas en Europa (`EU_Sales`), y FALSE en caso contrario.
+
+# Finalmente, mostrará el DataFrame resultante.
+# Para renderizar este archivo .Rmd a HTML, puedes usar el comando `rmarkdown::render("nombre_de_tu_archivo.Rmd")` en la consola de R, reemplazando "nombre_de_tu_archivo.Rmd" por el nombre de tu archivo .Rmd.
+
+
+
+```{r  include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r  include=FALSE}
+library(dplyr)
+library(readr)
+```
+
+```{r }
+# Cargamos el dataframe desde el csv
+df <- read_csv("vgsales.csv")
+```
+
+```{r}
+# Añade una nueva columna que es la suma de NA_Sales y EU_Sales
+df$Total_Sales <- df$NA_Sales + df$EU_Sales
+```
+
+```{r}
+# Añade una nueva columna que es la concatenación de Name y " - " y Platform
+df$Name_Platform <- paste0(df$Name, " - ", df$Platform)
+```
+
+```{r}	
+# Muestra las primeras filas del dataframe resultante
+head(df)
+head(df, 10)
+```	
+
+
+```{r }
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r }
+# Instalar y cargar la biblioteca necesaria
+library(tidyverse)
+library(dplyr)
+library(readr)
+```
+```{r }
+# Carga los datos del archivo CSV
+df <- read_csv("C:/Users/marie/Documents/GitHub/TRABAJO-R-ESTAD/vgsales.csv")
+```
+
+```{r}
+# Muestra las primeras filas del dataframe
+head(df)
+```
+
+```{r}
+# Recodifica la columna Platform
+df$Platform <- dplyr::recode(df$Platform,
+                             "PS4" = "PlayStation",
+                             "PS3" = "PlayStation",
+                             "PS2" = "PlayStation",
+                             "X360" = "Xbox",
+                             "XOne" = "Xbox",
+                             .default = "Other")
+
+# Crea una nueva columna llamada Platform_Type con within()
+df <- within(df, {
+  Platform_Type <- Platform
+})
+```
+    
+```{r}
+# Muestra las primeras filas del dataframe modificado
+head(df)
+```
+
+
+
+
+```{r}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```
+
+```{r}
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Filtramos los datos para obtener sólo los juegos de la plataforma Wii y que sean del género Sports
+videojuegos_filtrados <- videojuegos %>%
+  filter(Platform == "Wii" & Genre == "Sports")
+
+# Mostramos las primeras líneas después del filtrado
+head(videojuegos_filtrados)
+```
+
+```{r}
+# Guardamos los datos filtrados en un nuevo archivo CSV
+write.csv(videojuegos_filtrados, "./videogamesales_filtered.csv", row.names = FALSE)
+```
+
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(readr)
+library(knitr)
+```
+
+```{r}	
+# Asumiendo que el archivo csv está en la misma carpeta que este archivo .Rmd
+df <- read_csv("vgsales.csv")
+```
+
+```{r}	
+# Muestra las primeras filas del conjunto de datos
+head(df)
+```
+
+```{r}
+# Calcula la tabla de frecuencias para el género del videojuego
+genre_freq_table <- df %>%
+  group_by(Genre) %>%
+  summarise(Frequency = n(), .groups = "drop")
+
+kable(genre_freq_table, caption = "Tabla de Frecuencias - Género")
+```
+
+```{r}	
+# Calcula la tabla de frecuencias para la plataforma del videojuego
+platform_freq_table <- df %>%
+  group_by(Platform) %>%
+  summarise(Frequency = n(), .groups = "drop")
+
+kable(platform_freq_table, caption = "Tabla de Frecuencias - Plataforma")
+```
+
+```{r}
+# Calcula la tabla de frecuencias para la empresa publicadora del videojuego
+publisher_freq_table <- df %>%
+  group_by(Publisher) %>%
+  summarise(Frequency = n(), .groups = "drop")
+
+kable(publisher_freq_table, caption = "Tabla de Frecuencias - Publicadora")
+```
+
+# Este código realizará lo siguiente:
+
+# - Leerá el archivo csv desde la misma carpeta en la que se encuentra este archivo .Rmd
+# -  Calculará las tablas de frecuencias para las variables "Genre", "Platform" y "Publisher"
+# - Mostrará estas tablas de frecuencias en el archivo HTML final
+
+# Para renderizar este archivo .Rmd a .html, puedes seguir los pasos que te he proporcionado en la respuesta anterior.
+
+
+
+
+```{r}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```
+```{r }
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r }
+# Contamos las frecuencias de cada plataforma, género y publicador
+table(videojuegos$Platform)
+table(videojuegos$Genre)
+table(videojuegos$Publisher)
+```
+
+```{r }
+# Calculamos estadísticos descriptivos para las variables cuantitativas
+summary(videojuegos$Year)
+summary(videojuegos$NA_Sales)
+summary(videojuegos$EU_Sales)
+summary(videojuegos$JP_Sales)
+summary(videojuegos$Other_Sales)
+summary(videojuegos$Global_Sales)
+```
+
+```{r }
+# Agrupamos por género y calculamos la media de ventas globales para cada grupo
+videojuegos %>% 
+  group_by(Genre) %>%
+  summarise(mean_global_sales = mean(Global_Sales, na.rm = TRUE))
+
+# Agrupamos por plataforma y calculamos la media de ventas globales para cada grupo
+videojuegos %>% 
+  group_by(Platform) %>%
+  summarise(mean_global_sales = mean(Global_Sales, na.rm = TRUE))
+
+# Agrupamos por publicador y calculamos la media de ventas globales para cada grupo
+videojuegos %>% 
+  group_by(Publisher) %>%
+  summarise(mean_global_sales = mean(Global_Sales, na.rm = TRUE))
+```
+
+
+
+```{r}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```	
+
+```{r}
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Agrupamos los datos por género y calculamos la suma de ventas globales
+ventas_por_genero <- videojuegos %>%
+  group_by(Genre) %>%
+  summarise(VentasGlobales = sum(Global_Sales, na.rm = TRUE))
+
+# Creamos un diagrama de barras de las ventas globales por género
+ggplot(ventas_por_genero, aes(x = Genre, y = VentasGlobales, fill = Genre)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  labs(title = "Ventas globales de videojuegos por género", x = "Género", y = "Ventas globales (en millones)", fill = "Género") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+    
+```{r}
+# Agrupamos los datos por año y calculamos la suma de ventas globales
+ventas_por_año <- videojuegos %>%
+  group_by(Year) %>%
+  summarise(VentasGlobales = sum(Global_Sales, na.rm = TRUE))
+
+# Creamos un diagrama de líneas de las ventas globales por año
+ggplot(ventas_por_año, aes(x = Year, y = VentasGlobales, group = 1)) +
+  geom_line(color = "blue") +
+  theme_minimal() +
+  labs(title = "Ventas globales de videojuegos por año", x = "Año", y = "Ventas globales (en millones)")
+```
+
+
+
+```{r}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```
+
+```{r}
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Creamos un diagrama de cajas para las ventas globales
+ggplot(videojuegos, aes(x = "", y = Global_Sales)) +
+  geom_boxplot() +
+  labs(title = "Diagrama de cajas de las ventas globales",
+       y = "Ventas globales")
+```
+
+```{r}
+# Creamos un diagrama de cajas para las ventas globales agrupado por género
+ggplot(videojuegos, aes(x = Genre, y = Global_Sales)) +
+  geom_boxplot() +
+  labs(title = "Diagrama de cajas de las ventas globales por género",
+       x = "Género",
+       y = "Ventas globales") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+
+
+
+
+```{r, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```	
+
+```{r}	
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Agrupamos por género y sumamos las ventas globales
+ventas_por_genero <- videojuegos %>%
+  group_by(Genre) %>%
+  summarise(Total_Global_Sales = sum(Global_Sales, na.rm = TRUE))
+
+# Generamos un gráfico de barras de las ventas globales por género
+ggplot(ventas_por_genero, aes(x = Genre, y = Total_Global_Sales)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(
+    title = "Ventas globales por género de videojuegos",
+    x = "Género",
+    y = "Ventas globales (en millones)",
+    caption = "Datos de Kaggle"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+# Guardamos los datos agrupados en un nuevo archivo CSV
+write.csv(ventas_por_genero, "./vgsales_by_genre.csv", row.names = FALSE)
+```
+
+
+
+
+
+```{r, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+library(broom)
+library(ggplot2)
+```
+
+```{r}	
+# Leemos el fichero csv
+videojuegos <- read.csv("vgsales.csv", header = TRUE)
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Eliminamos las filas con valores desconocidos (NAs)
+videojuegos <- videojuegos %>% drop_na()
+
+# Mostramos las primeras líneas después de preprocesamiento
+head(videojuegos)
+```
+
+```{r}
+# Construimos un modelo de regresión lineal simple
+model <- lm(Global_Sales ~ Year, data = videojuegos)
+
+# Mostramos un resumen del modelo
+summary(model)
+```
+
+```{r}
+# Interpretamos el modelo
+tidy_model <- tidy(model)
+
+# El coeficiente de "Year" nos dice cuánto cambia en promedio la variable dependiente (Global_Sales)
+# por cada aumento de una unidad en "Year", manteniendo todas las demás variables constantes.
+tidy_model
+```
+
+```{r}
+# Creamos un gráfico de dispersión con la línea de regresión
+ggplot(videojuegos, aes(x = Year, y = Global_Sales)) +
+  geom_point() +
+  geom_smooth(method = lm, se = FALSE, color = "red")
+```
+
+
+
+
+```{r, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+library(caret)
+```
+
+```{r}
+# Leemos el fichero csv
+vgsales <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(vgsales)
+```
+
+```{r}
+# Creamos un modelo de regresión lineal simple
+model_simple <- lm(Global_Sales ~ NA_Sales, data = vgsales)
+
+# Resumen del modelo
+summary(model_simple)
+```
+
+```{r}	
+# Creamos un modelo de regresión lineal múltiple
+model_multiple <- lm(Global_Sales ~ NA_Sales + EU_Sales + JP_Sales, data = vgsales)
+
+# Resumen del modelo
+summary(model_multiple)
+```
+
+```{r}	
+# Comparamos los dos modelos usando el criterio de información de Akaike (AIC)
+AIC(model_simple, model_multiple)
+```
+
+
+
+```{r, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+library(caret)
+```
+
+```{r}
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Eliminamos las filas con valores desconocidos (NAs)
+videojuegos <- videojuegos %>% drop_na()
+
+# Convertimos las variables categóricas a factores
+videojuegos$Platform <- as.factor(videojuegos$Platform)
+videojuegos$Genre <- as.factor(videojuegos$Genre)
+videojuegos$Publisher <- as.factor(videojuegos$Publisher)
+
+# Mostramos las primeras líneas después de preprocesamiento
+head(videojuegos)
+```
+
+```{r}
+# Dividimos el conjunto de datos en un conjunto de entrenamiento y un conjunto de prueba
+set.seed(123)
+indices <- createDataPartition(videojuegos$Global_Sales, p = 0.8, list = FALSE)
+datos_entrenamiento <- videojuegos[indices,]
+datos_prueba <- videojuegos[-indices,]
+
+# Construimos el modelo de regresión utilizando las ventas en NA para predecir las ventas globales
+modelo <- lm(Global_Sales ~ NA_Sales, data = datos_entrenamiento)
+```
+
+```{r}	
+# Hacemos predicciones en el conjunto de prueba
+predicciones <- predict(modelo, newdata = datos_prueba)
+
+# Mostramos las predicciones
+head(predicciones)
+```
+
+```{r}	
+# Evaluamos el modelo calculando el error cuadrático medio
+ECM <- mean((datos_prueba$Global_Sales - predicciones)^2)
+
+ECM
+```
+
+
+
+
+
+```{r, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```	
+```{r}
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Seleccionamos las columnas necesarias
+videojuegos <- videojuegos %>% select(Rank, Name, Platform, Year, Genre, Publisher, NA_Sales, EU_Sales, JP_Sales, Other_Sales, Global_Sales)
+
+# Eliminamos las filas con valores desconocidos (NAs)
+videojuegos <- videojuegos %>% drop_na()
+
+# Mostramos las primeras líneas después de preprocesamiento
+head(videojuegos)
+```
+
+```{r}
+# Guardamos los datos preprocesados en un nuevo archivo CSV
+write.csv(videojuegos, "./vgsales_preprocessed.csv", row.names = FALSE)
+```
+
+
+
+
+```{r, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```
+
+```{r}	
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Pivotamos el DataFrame de formato ancho a largo
+videojuegos_pivotado <- videojuegos %>%
+  pivot_longer(cols = c(NA_Sales, EU_Sales, JP_Sales, Other_Sales, Global_Sales),
+               names_to = "Region",
+               values_to = "Sales")
+
+# Mostramos las primeras líneas después del pivotamiento
+head(videojuegos_pivotado)
+```
+    
+
+
+# Este archivo .Rmd hará lo siguiente:
+
+# 1. Cargará los datos del archivo CSV.
+# 2. Creará un diagrama de barras mostrando el número de videojuegos por género para cada plataforma.
+# 3. Creará un histograma mostrando la distribución de las ventas globales por género.
+# 4. Creará un diagrama de cajas mostrando las ventas en Norteamérica por género para cada plataforma.
+
+
+```{r, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```	
+
+```{r}	
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Creamos un diagrama de barras para visualizar el número de videojuegos por género
+ggplot(data = videojuegos) +
+  geom_bar(mapping = aes(x = Genre)) +
+  facet_wrap(~ Platform) +
+  theme(axis.text.x = element_text(angle = 90)) +
+  labs(title = "Número de Videojuegos por Género y Plataforma", x = "Género", y = "Número de Videojuegos")
+
+# Creamos un histograma para visualizar la distribución de las ventas globales
+ggplot(data = videojuegos) +
+  geom_histogram(mapping = aes(x = Global_Sales)) +
+  facet_wrap(~ Genre) +
+  labs(title = "Distribución de Ventas Globales por Género", x = "Ventas Globales", y = "Frecuencia")
+
+# Creamos un diagrama de cajas para visualizar las ventas en Norteamérica por género
+ggplot(data = videojuegos) +
+  geom_boxplot(mapping = aes(x = Genre, y = NA_Sales)) +
+  facet_wrap(~ Platform) +
+  theme(axis.text.x = element_text(angle = 90)) +
+  labs(title = "Ventas en Norteamérica por Género y Plataforma", x = "Género", y = "Ventas en Norteamérica")
+```
+
+
+
+
+```{r, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```
+    
+```{r}
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Creamos un gráfico de barras que muestra las ventas globales por género
+videojuegos %>%
+  ggplot(aes(x = Genre, y = Global_Sales, fill = Genre)) +
+  geom_bar(stat = "identity", color = "#000000") +
+  theme_minimal() +
+  labs(title = "Ventas globales por género", x = "Género", y = "Ventas globales") +
+  theme(legend.position = "none", plot.title = element_text(hjust = 0.5)) +
+  scale_fill_brewer(palette = "Set3")
+```
+
+```{r}
+# Creamos un gráfico de puntos que muestra las ventas globales por año
+videojuegos %>%
+  ggplot(aes(x = Year, y = Global_Sales, color = Genre)) +
+  geom_point(alpha = 0.6, size = 2, shape = 21, fill = "#545050") +
+  theme_minimal() +
+  labs(title = "Ventas globales por año", x = "Año", y = "Ventas globales") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_color_brewer(palette = "Set1")
+```
+
+
+
+
+
+# Este código lee tu archivo CSV, luego crea un histograma para mostrar la distribución observada de las ventas globales. Después, crea un gráfico de densidad para representar la distribución teórica (en este caso, se supone que es una distribución normal). Finalmente, muestra las dos gráficas lado a lado para su comparación.
+
+
+```{r, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+library(ggplot2)
+library(ggpubr)
+```
+
+```{r}
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Creamos un histograma con las ventas globales
+hist_ventas <- videojuegos %>%
+  ggplot(aes(x = Global_Sales)) +
+  geom_histogram(binwidth = 1, fill = "#a600ff", alpha = 0.5) +
+  labs(title = "Distribución observada de ventas globales", x = "Ventas Globales", y = "Frecuencia")
+
+# Creamos un gráfico de densidad que represente la distribución teórica (supongamos que es normal)
+dens_ventas <- videojuegos %>%
+  ggplot(aes(x = Global_Sales)) +
+  stat_density(aes(y = ..count..), geom = "line", color = "#dd0000") +
+  labs(title = "Distribución teórica de ventas globales", x = "Ventas Globales", y = "Densidad")
+
+# Comparamos las dos gráficas
+ggarrange(hist_ventas, dens_ventas, ncol = 2, nrow = 1)
+```
+
+
+
+
+
+
+# Este código lee el archivo CSV, selecciona la variable 'Global_Sales', crea una distribución normal teórica con la misma media y desviación estándar que 'Global_Sales', y luego crea un gráfico de comparación.
+
+
+```{r, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```
+
+```{r}	
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}	
+# Seleccionamos la variable de interés
+ventas_globales <- videojuegos$Global_Sales
+
+# Creamos una distribución normal teórica con la misma media y desviación estándar
+dist_normal <- rnorm(length(ventas_globales), mean(ventas_globales), sd(ventas_globales))
+
+# Ordenamos ambas distribuciones para poder comparar sus percentiles
+ventas_globales <- sort(ventas_globales)
+dist_normal <- sort(dist_normal)
+
+# Creamos un gráfico de comparación
+plot(dist_normal, ventas_globales, main = "QQ Plot: Ventas Globales vs Distribución Normal",
+     xlab = "Distribución Normal Teórica", ylab = "Ventas Globales", pch = 16)
+abline(a = 0, b = 1, col = "red")
+```
+
+
+
+
+# Este código lee los datos desde el archivo "vgsales.csv", elimina las filas con valores desconocidos y luego guarda los datos preprocesados en el archivo "vgsales_preprocessed.csv". También muestra las primeras líneas del conjunto de datos preprocesado.
+
+
+```{r, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(knitr)
+library(rmarkdown)
+```
+
+```{r}
+# Función para cargar los datos
+load_data <- function(filename) {
+  data <- read.csv(filename, header = TRUE)
+  return(data)
+}
+
+# Función para eliminar las filas con valores desconocidos
+remove_na_rows <- function(data) {
+  data <- data[complete.cases(data), ]
+  return(data)
+}
+
+# Función para guardar los datos preprocesados
+save_data <- function(data, filename) {
+  write.csv(data, filename, row.names = FALSE)
+}
+```
+
+```{r}
+# Cargamos los datos
+videojuegos <- load_data("./vgsales.csv")
+
+# Eliminamos las filas con valores desconocidos
+videojuegos <- remove_na_rows(videojuegos)
+
+# Guardamos los datos preprocesados
+save_data(videojuegos, "./vgsales_preprocessed.csv")
+
+# Mostramos las primeras líneas del conjunto de datos preprocesado
+head(videojuegos)
+```
+
+
+
+
+```{r, include=FALSE}
+# Cargamos las bibliotecas necesarias
+library(tidyverse)
+library(knitr)
+library(rmarkdown)
+```
+
+```{r}
+# Leemos el fichero csv
+videojuegos <- read.csv("./vgsales.csv", header = TRUE)
+
+# Mostramos las primeras líneas del conjunto de datos
+head(videojuegos)
+```
+
+```{r}
+# Generamos números aleatorios a partir de una distribución uniforme
+set.seed(123)  # Para reproducibilidad
+ventas_simuladas <- runif(nrow(videojuegos), min(videojuegos$Global_Sales), max(videojuegos$Global_Sales))
+
+# Añadimos la nueva variable al dataframe
+videojuegos$Ventas_Simuladas <- ventas_simuladas
+
+# Mostramos las primeras líneas del conjunto de datos con la variable simulada
+head(videojuegos)
+```
+
+```{r}
+# Resumen estadístico de la variable simulada
+summary(videojuegos$Ventas_Simuladas)
+
+# Histograma de la variable simulada
+hist(videojuegos$Ventas_Simuladas, main = "Histograma de Ventas Simuladas", xlab = "Ventas Simuladas")
+```
+
